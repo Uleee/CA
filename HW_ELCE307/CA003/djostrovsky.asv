@@ -1,0 +1,61 @@
+function [] = djostrovsky()
+%	Considering τ=50 "ms" , 
+%compute and plot impulse and magnitude response of above two systems, and given your comments about nature of two systems.
+%UNTITLED15 Summary of this function goes here
+%   Detailed explanation goes here
+load handel
+tau=0.05;
+fs=8192;
+D=ceil(tau*fs);
+b1=[1 zeros(1,D-1) 0.7];
+a1=1;
+b2=1;
+a2=[1 zeros(1,D-1) -0.7];
+[h1,t1]=impz(b1,a1);
+[h2,t2]=impz(b2,a2);
+
+subplot(2,1,1)
+stem(h1);
+title('Impulse Response of (1) System');
+xlabel('time'); 
+ylabel('Amplitude');
+
+subplot(2,1,2)
+stem(h2);
+title('Impulse Response of (2) System');
+xlabel('time'); 
+ylabel('Amplitude');
+
+
+[f1,w1] = freqz(b1,a1,'whole',2001); % in order cover all unit circle 2001 was used
+[f2,w2] = freqz(b2,a1,'whole',2001); % in order cover all unit circle 2001 was used
+magnitude1 = 20*log10(abs(f1));
+magnitude2 = 20*log10(abs(f2));
+
+phase1 = angle(f1)*180/pi;
+phase2 = angle(f2)*180/pi;
+
+figure
+subplot(2,2,1); 
+plot(w1/pi,magnitude1);
+title('Magnitude Response of ');
+xlabel('frequency in pi units');    
+ylabel('Magnitude, dB');
+subplot(2,2,2); 
+plot(w2/pi,magnitude2);
+title('Magnitude Response');
+xlabel('frequency in pi units');    
+ylabel('Magnitude, dB');
+subplot(2,2,3)
+plot(w1/pi,phase1);
+title('Phase Response');
+xlabel('frequency in pi units');    
+ylabel('Degrees');
+subplot(2,2,4)
+plot(w2/pi,phase2);
+title('Phase Response');
+xlabel('frequency in pi units');    
+ylabel('Degrees');
+ 
+end
+
